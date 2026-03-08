@@ -3,17 +3,21 @@ import path from "path"
 import axios from "axios"
 import fetch from "node-fetch"
 import fs from "fs"
+import search from "./app/routes/search.js"
+import router from "router"
 
 const app = express();
 const port = 3000;
 const __dirname = path.resolve();
 
 
-app.get('/', (req, res) => {
-    res.send('Welcome to my server!');
-});
+// app.get('/', (req, res) => {
+    // res.send('Welcome to my server!');
+// });
 
-//app.use('/static', express.static(path.join(__dirname, 'public')))
+app.use('/', express.static(path.join(__dirname, 'public')))
+
+app.use("/search", search);
 
 function startUp() {
     const fp = "twitchtokens.txt";
@@ -59,8 +63,6 @@ function getGame(id) {
 const keys = startUp();
 const clientID = keys[1]
 const accessToken = getAccess(keys[4])
-
-
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

@@ -6,6 +6,6 @@ searchBtn.addEventListener('click', GameSearch);
 
 function GameSearch() {
     const textValue = searchBar.value;
-    console.log(window.location.href)
-    //window.location.href = window.location.href.toString().split("/")[1];
+    //console.log(window.location.href)
+    window.location.href = window.location.href + 'search.html';
 }
