@@ -6,20 +6,51 @@ import axios from "axios"
 const search = express.Router();
 const __dirname = path.resolve();
 
+let genre;
+
+   
+
 search.get('/', async (req, res) => {
-    const searchTerm = req.query.q;
-    let temp;
-    try {
-        temp = await getGame(searchTerm);
-    } catch {
-        console.log("please no error")
-    } 
+    // const searchTerm = req.query.q;
+    // let temp;
+    // try {
+        // temp = await getGame(searchTerm);
+    // } catch {
+        // console.log("please no error")
+    // } 
     
     res.sendFile('public/search.html', {root: __dirname});
-    const txtTest = document.querySelector('.info');
-    console.log(txtTest);
-    console.log(temp.data[0]);
+    console.log("get");
+    // console.log(temp.data[0]);
 });
+
+search.post('/DB', async (req, res) => {
+    let data;
+    console.log("in DB")
+    try {
+        const table = await getChart();
+        genre = table.data;
+        console.log(genre);
+    } catch {
+        console.log("getting table FAILED")
+    }
+    
+    
+    try {
+        data = await req.body;
+        //console.log(data.search); // our number to now put into a db search.
+        //return data;
+        const gameInfo = await getGame(data.search);
+        //console.log(gameInfo.data);
+        // PROCESS DATA TO SEND BACK IN RESPONSE
+        
+        res.status(200);
+        res.json({ dataToSendBack : data })
+        res.send()
+    } catch {
+        console.log("failed to retrieve data from database.");
+    } 
+})
 
 function startUp() {
     const fp = "twitchtokens.txt";
@@ -78,6 +109,29 @@ async function getGame(id) {
         });
     } catch {
         console.log("failed to get game data")
+    }
+    return res;
+}
+
+async function getChart() {
+    console.log("GETTING CHART")
+    if(accessToken == '')
+        return
+    const header = {
+            'Client-ID': clientID,
+            'Authorization': `Bearer ${accessToken}`,
+        }
+    let res;
+    try {
+        res = await axios({
+            url: "https://api.igdb.com/v4/age_rating_categories",
+            method: 'POST',
+            headers: header,
+            data: 'fields rating;'
+            //data: 'fields name;' // for genres
+        });
+    } catch {
+        console.log("failed to get game chart")
     }
     return res;
 }
