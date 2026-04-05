@@ -6,7 +6,7 @@ import axios from "axios"
 const search = express.Router();
 const __dirname = path.resolve();
 
-let genre;
+let genre_table = new Map();
 
    
 
@@ -24,28 +24,47 @@ search.get('/', async (req, res) => {
     // console.log(temp.data[0]);
 });
 
+
+// ########################################
+// #########      TO DO      ##############
+// ########################################
+// Make the generation of the genre table finish first before moving on. or else we have undefined values.
+// 
 search.post('/DB', async (req, res) => {
-    let data;
-    console.log("in DB")
+    // Make table for genre (id, name)
     try {
         const table = await getChart();
-        genre = table.data;
-        console.log(genre);
+        for(const gen of table.data) {
+            genre_table.set(gen['id'], gen['name']);
+        }
+        console.log(genre_table)
     } catch {
         console.log("getting table FAILED")
     }
     
-    
+    // Search for game based on id
+    let data;
     try {
         data = await req.body;
-        //console.log(data.search); // our number to now put into a db search.
-        //return data;
         const gameInfo = await getGame(data.search);
-        //console.log(gameInfo.data);
-        // PROCESS DATA TO SEND BACK IN RESPONSE
+        console.log(gameInfo.data);
         
+        // PROCESS DATA TO SEND BACK IN RESPONSE
+        const raw_data = gameInfo.data[0];
+        let genre = [];
+        for(const i of raw_data.genres) {
+            console.log(genre_table[i]);
+            genre.push(genre_table[i]);
+        }
+        
+        // Send response
         res.status(200);
-        res.json({ dataToSendBack : data })
+        res.json({ 
+            name : raw_data['name'],
+            rating : raw_data['rating'],
+            summary : raw_data['summary'],
+            genre : genre,
+        })
         res.send()
     } catch {
         console.log("failed to retrieve data from database.");
@@ -105,7 +124,7 @@ async function getGame(id) {
             url: "https://api.igdb.com/v4/games",
             method: 'POST',
             headers: header,
-            data: `fields *; where id = ${id}; limit 2;`
+            data: `fields name, rating, summary, genres; where id = ${id}; limit 1;`
         });
     } catch {
         console.log("failed to get game data")
@@ -124,11 +143,20 @@ async function getChart() {
     let res;
     try {
         res = await axios({
-            url: "https://api.igdb.com/v4/age_rating_categories",
+            url: "https://api.igdb.com/v4/genres",
             method: 'POST',
             headers: header,
-            data: 'fields rating;'
-            //data: 'fields name;' // for genres
+            data: 'fields name;'
+            
+            // url: "https://api.igdb.com/v4/age_ratings",
+            // method: 'POST',
+            // headers: header,
+            // data: 'fields rating_category;'
+            
+            // url: "https://api.igdb.com/v4/age_rating_categories",
+            // method: 'POST',
+            // headers: header,
+            // data: 'fields rating, organization, checksum;'
         });
     } catch {
         console.log("failed to get game chart")

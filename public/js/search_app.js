@@ -16,7 +16,7 @@ async function loadPage() {
             throw new Error(`Response status: ${response.status}`);
         }
         const result = await response.data;
-        //console.log(result.dataToSendBack)
+        console.log(result)
     } catch (error) {
         console.error(error.message);
         console.log("error in here");
