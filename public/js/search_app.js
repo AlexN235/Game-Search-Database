@@ -1,7 +1,8 @@
 // Javascript for frontend of search webpage
-//import axios from "/axios/axios.min.js"; // NEED TO SERVE FILE AND NOT USE RELATIVE PATHS
 
+// globals
 const query = window.location.href.split("?");
+const game_name = window.querySelectorAll('.game-name-info');
 
 const data = {
     search: (window.location.href.split("=")[1]),
@@ -16,11 +17,14 @@ async function loadPage() {
             throw new Error(`Response status: ${response.status}`);
         }
         const result = await response.data;
-        console.log(result)
+        console.log(result);
+        return result;
     } catch (error) {
         console.error(error.message);
         console.log("error in here");
     }
 }
 
-loadPage()
+const page_info = loadPage()
+console.log("starting")
+console.log(page_info)

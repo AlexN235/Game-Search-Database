@@ -34,6 +34,7 @@ search.post('/DB', async (req, res) => {
     // Make table for genre (id, name)
     try {
         const table = await getChart();
+        console.log(table)
         for(const gen of table.data) {
             genre_table.set(gen['id'], gen['name']);
         }
@@ -45,18 +46,17 @@ search.post('/DB', async (req, res) => {
     // Search for game based on id
     let data;
     try {
+       
         data = await req.body;
         const gameInfo = await getGame(data.search);
-        console.log(gameInfo.data);
+        //console.log(gameInfo.data);
         
         // PROCESS DATA TO SEND BACK IN RESPONSE
         const raw_data = gameInfo.data[0];
-        let genre = [];
-        for(const i of raw_data.genres) {
-            console.log(genre_table[i]);
-            genre.push(genre_table[i]);
-        }
-        
+        const genre = [];
+        for(const i of raw_data.genres) 
+            genre.push(genre_table.get(i));
+
         // Send response
         res.status(200);
         res.json({ 
@@ -111,7 +111,7 @@ async function getAccess(secret) {
 }
 
 async function getGame(id) {
-    console.log(id);
+    //console.log(id);
     if(accessToken == '')
         return
     const header = {
