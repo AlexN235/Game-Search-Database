@@ -2,29 +2,39 @@
 
 // globals
 const query = window.location.href.split("?");
-const game_name = window.querySelectorAll('.game-name-info');
+const game_name = document.querySelector('.game-name-info');
+const game_rating = document.querySelector('.game-rating-info');
+const game_genre = document.querySelector('.game-genre-info');
+const game_summary = document.querySelector('.game-summary-info');
 
 const data = {
     search: (window.location.href.split("=")[1]),
 }
 async function loadPage() {
     const url = query[0] + "/DB";
-    console.log(url, ": We sending")
     try {
         const response = await axios.post(url, data);
-        console.log(response.statusText)
         if(response.statusText != "OK") {
             throw new Error(`Response status: ${response.status}`);
         }
         const result = await response.data;
-        console.log(result);
-        return result;
+        
+        // Set damage on page
+        game_name.innerHTML = result.name;
+        game_rating.innerHTML = result.rating;1
+        game_summary.innerHTML = result.summary;
+        
+        game_genre.innerHTML = "";
+        for(const g of result.genre) {
+            if(g) {
+                if(g != result.genre[0]) game_genre.innerHTML += ", ";
+                game_genre.innerHTML += g;
+            }
+        }
     } catch (error) {
         console.error(error.message);
         console.log("error in here");
     }
 }
 
-const page_info = loadPage()
-console.log("starting")
-console.log(page_info)
+loadPage()

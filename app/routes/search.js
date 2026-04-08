@@ -8,8 +8,6 @@ const __dirname = path.resolve();
 
 let genre_table = new Map();
 
-   
-
 search.get('/', async (req, res) => {
     // const searchTerm = req.query.q;
     // let temp;
@@ -20,7 +18,6 @@ search.get('/', async (req, res) => {
     // } 
     
     res.sendFile('public/search.html', {root: __dirname});
-    console.log("get");
     // console.log(temp.data[0]);
 });
 
@@ -34,11 +31,8 @@ search.post('/DB', async (req, res) => {
     // Make table for genre (id, name)
     try {
         const table = await getChart();
-        console.log(table)
-        for(const gen of table.data) {
+        for(const gen of table.data)
             genre_table.set(gen['id'], gen['name']);
-        }
-        console.log(genre_table)
     } catch {
         console.log("getting table FAILED")
     }
@@ -49,7 +43,6 @@ search.post('/DB', async (req, res) => {
        
         data = await req.body;
         const gameInfo = await getGame(data.search);
-        //console.log(gameInfo.data);
         
         // PROCESS DATA TO SEND BACK IN RESPONSE
         const raw_data = gameInfo.data[0];
@@ -111,7 +104,6 @@ async function getAccess(secret) {
 }
 
 async function getGame(id) {
-    //console.log(id);
     if(accessToken == '')
         return
     const header = {
@@ -133,7 +125,6 @@ async function getGame(id) {
 }
 
 async function getChart() {
-    console.log("GETTING CHART")
     if(accessToken == '')
         return
     const header = {
@@ -151,6 +142,7 @@ async function getChart() {
             // url: "https://api.igdb.com/v4/age_ratings",
             // method: 'POST',
             // headers: header,
+            // headers: header,
             // data: 'fields rating_category;'
             
             // url: "https://api.igdb.com/v4/age_rating_categories",
@@ -167,6 +159,5 @@ async function getChart() {
 const keys = startUp();
 const clientID = keys[1]
 const accessToken = await setUp(keys[4])
-console.log(accessToken);
 
 export default search;
