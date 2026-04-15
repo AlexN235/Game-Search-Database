@@ -48,6 +48,22 @@ h3 {
     text-align: center;
 }
 
+.form-control {
+    display: flex;
+}
+
+.form-control input {
+    flex-grow: 1;
+    padding: 5px;
+    margin: 5px;
+}
+
+.form-control button {
+    padding: 5px;
+    margin: 5px;
+    background-color: lightblue;
+}
+
 .game-info-container {
     
 }
