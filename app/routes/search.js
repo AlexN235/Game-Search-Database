@@ -42,7 +42,7 @@ search.post('/DB', async (req, res) => {
     try {
        
         data = await req.body;
-        const gameInfo = await getGame(data.search);
+        const gameInfo = await getGame(data.search.replaceAll("%20", " "));
         
         // PROCESS DATA TO SEND BACK IN RESPONSE
         const raw_data = gameInfo.data[0];
@@ -103,7 +103,7 @@ async function getAccess(secret) {
     })
 }
 
-async function getGame(id) {
+async function getGame(gameName) {
     if(accessToken == '')
         return
     const header = {
@@ -116,7 +116,7 @@ async function getGame(id) {
             url: "https://api.igdb.com/v4/games",
             method: 'POST',
             headers: header,
-            data: `fields name, rating, summary, genres; where id = ${id}; limit 1;`
+            data: `fields name, rating, summary, genres; search "${gameName}"; limit 1;`
         });
     } catch {
         console.log("failed to get game data")
