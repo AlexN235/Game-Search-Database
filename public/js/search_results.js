@@ -21,6 +21,17 @@ async function loadPage() {
         const names = result.name;
         const ids = result.id;
         
+        console.log(names);
+        
+        game_list.innerHTML = "";
+        for(let i=0; i<names.length; i++) {
+            game_list.innerHTML += '\
+            <div class="search-node">\
+                <h4 class="item-name"> ' + names[i] + ' </h4>\
+                <div class="item-description"> ' + ids[i] + ' </div>\
+            </div>\
+        ';
+        }
         
     } catch (error) {
         console.error(error.message);

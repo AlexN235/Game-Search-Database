@@ -42,6 +42,16 @@ h3 {
     text-align: center;
 }
 
+h4 {
+    text-align: left;
+    padding: 0px;
+    margin: 0px;
+}
+
+.search-node {
+    padding: 0px;
+}
+
 .game-info-section {
     margin: auto;
     background-color: white;

@@ -26,9 +26,9 @@ search.post('/query_name', async (req, res) => {
         let id = [];
         for(const d of raw_data) {
             id.push(d.id);
-            game.push(d.game);
+            game.push(d.name);
         }
-
+        
         // Send response
         res.status(200);
         res.json({ 
