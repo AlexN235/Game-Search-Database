@@ -10,6 +10,7 @@ const game_summary = document.querySelector('.game-summary-info');
 const data = {
     search: (window.location.href.split("=")[1]),
 }
+
 async function loadPage() {
     const url = query[0] + "/DB";
     try {
@@ -21,7 +22,7 @@ async function loadPage() {
         
         // Set damage on page
         game_name.innerHTML = result.name;
-        game_rating.innerHTML = result.rating;1
+        game_rating.innerHTML = result.rating;
         game_summary.innerHTML = result.summary;
         
         game_genre.innerHTML = "";

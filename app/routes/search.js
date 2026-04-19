@@ -9,24 +9,38 @@ const __dirname = path.resolve();
 let genre_table = new Map();
 
 search.get('/', async (req, res) => {
-    // const searchTerm = req.query.q;
-    // let temp;
-    // try {
-        // temp = await getGame(searchTerm);
-    // } catch {
-        // console.log("please no error")
-    // } 
-    
-    res.sendFile('public/search.html', {root: __dirname});
-    // console.log(temp.data[0]);
+    res.sendFile('public/search_results.html', {root: __dirname});
 });
 
+search.post('/query_name', async (req, res) => {
+    // Search for game based on id
+    let data;
+    try {
+        data = await req.body;
+        const gameInfo = await getGameName(data.search.replaceAll("%20", " "));
+        
+        // PROCESS DATA TO SEND BACK IN RESPONSE
+        const raw_data = gameInfo.data;
+        //console.log(raw_data);
+        let game = [];
+        let id = [];
+        for(const d of raw_data) {
+            id.push(d.id);
+            game.push(d.game);
+        }
 
-// ########################################
-// #########      TO DO      ##############
-// ########################################
-// Make the generation of the genre table finish first before moving on. or else we have undefined values.
-// 
+        // Send response
+        res.status(200);
+        res.json({ 
+            name : game,
+            id : id,
+        })
+        res.send()
+    } catch {
+        console.log("failed to retrieve data from database.");
+    } 
+})
+
 search.post('/DB', async (req, res) => {
     // Make table for genre (id, name)
     try {
@@ -117,6 +131,27 @@ async function getGame(gameName) {
             method: 'POST',
             headers: header,
             data: `fields name, rating, summary, genres; search "${gameName}"; limit 1;`
+        });
+    } catch {
+        console.log("failed to get game data")
+    }
+    return res;
+}
+
+async function getGameName(gameName) {
+    if(accessToken == '')
+        return
+    const header = {
+            'Client-ID': clientID,
+            'Authorization': `Bearer ${accessToken}`,
+        }
+    let res;
+    try {
+        res = await axios({
+            url: "https://api.igdb.com/v4/games",
+            method: 'POST',
+            headers: header,
+            data: `fields name; search "${gameName}"; limit 10;`
         });
     } catch {
         console.log("failed to get game data")
