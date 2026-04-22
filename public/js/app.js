@@ -6,5 +6,6 @@ searchBtn.addEventListener('click', GameSearch);
 
 function GameSearch() {
     const textValue = searchBar.value;
+    alert(window.location.href + 'search' + `?q=${textValue}`);
     window.location.href = window.location.href + 'search' + `?q=${textValue}`;
 }

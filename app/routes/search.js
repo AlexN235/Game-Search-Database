@@ -12,16 +12,19 @@ search.get('/', async (req, res) => {
     res.sendFile('public/search_results.html', {root: __dirname});
 });
 
+search.get('/game{/:id}', async (req, res) => {
+    res.sendFile('public/game_details.html', {root: __dirname});
+});
+
 search.post('/query_name', async (req, res) => {
     // Search for game based on id
     let data;
     try {
         data = await req.body;
-        const gameInfo = await getGameName(data.search.replaceAll("%20", " "));
+        const gameInfo = await getGameByName(data.search.replaceAll("%20", " "));
         
         // PROCESS DATA TO SEND BACK IN RESPONSE
         const raw_data = gameInfo.data;
-        //console.log(raw_data);
         let game = [];
         let id = [];
         for(const d of raw_data) {
@@ -41,7 +44,10 @@ search.post('/query_name', async (req, res) => {
     } 
 })
 
-search.post('/DB', async (req, res) => {
+search.post('/game_info', async (req, res) => {
+    const id = req.body.id;
+    console.log(id);
+    console.log("in game with ID");
     // Make table for genre (id, name)
     try {
         const table = await getChart();
@@ -56,7 +62,7 @@ search.post('/DB', async (req, res) => {
     try {
        
         data = await req.body;
-        const gameInfo = await getGame(data.search.replaceAll("%20", " "));
+        const gameInfo = await getGameById(id);
         
         // PROCESS DATA TO SEND BACK IN RESPONSE
         const raw_data = gameInfo.data[0];
@@ -117,7 +123,7 @@ async function getAccess(secret) {
     })
 }
 
-async function getGame(gameName) {
+async function getGameById(gameID) {
     if(accessToken == '')
         return
     const header = {
@@ -130,7 +136,7 @@ async function getGame(gameName) {
             url: "https://api.igdb.com/v4/games",
             method: 'POST',
             headers: header,
-            data: `fields name, rating, summary, genres; search "${gameName}"; limit 1;`
+            data: `fields name, id, rating, summary, genres; where id=${gameID}; limit 1;` // change this to use id
         });
     } catch {
         console.log("failed to get game data")
@@ -138,7 +144,7 @@ async function getGame(gameName) {
     return res;
 }
 
-async function getGameName(gameName) {
+async function getGameByName(gameName) {
     if(accessToken == '')
         return
     const header = {

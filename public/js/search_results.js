@@ -24,13 +24,15 @@ async function loadPage() {
         console.log(names);
         
         game_list.innerHTML = "";
-        for(let i=0; i<names.length; i++) {
-            game_list.innerHTML += '\
-            <div class="search-node">\
-                <h4 class="item-name"> ' + names[i] + ' </h4>\
-                <div class="item-description"> ' + ids[i] + ' </div>\
-            </div>\
-        ';
+        for(let i=0; i<names.length; i++) { // <li onclick='location.href = "www.somepage.com" ... >
+            game_list.innerHTML += `\
+            <li class="search-node">\
+                <a href=search/game/${ids[i]}>\
+                    <h4 class="item-name"> ${names[i]} </h4>\
+                </a>\
+                <div class="item-description"> ${ids[i]} </div>\
+            </li>\
+        `;
         }
         
     } catch (error) {
