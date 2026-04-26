@@ -21,14 +21,14 @@ Main
 ===============
 */
 .section-center {
-  width: 90vw;
+  width: auto;
   margin: 0 auto;
-  max-width: 35rem;
-  margin-top: 8rem;
+  max-width: auto;
+  margin-top: 5rem;
   border-radius: 0.5rem;
   border: 1px solid black;
   padding: 1rem;
-  background-color: white;
+  background-color: grey;
 }
 
 .display-game-img {
@@ -76,5 +76,14 @@ h4 {
 }
 
 .game-info-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto auto auto auto auto;
+    gap: 10px;
+    background-color: lightgrey;
     
+}
+
+.game-cover {
+    grid-row-end: span 3
 }

@@ -21,10 +21,8 @@ async function loadPage() {
         const names = result.name;
         const ids = result.id;
         
-        console.log(names);
-        
         game_list.innerHTML = "";
-        for(let i=0; i<names.length; i++) { // <li onclick='location.href = "www.somepage.com" ... >
+        for(let i=0; i<names.length; i++) {
             game_list.innerHTML += `\
             <li class="search-node">\
                 <a href=search/game/${ids[i]}>\

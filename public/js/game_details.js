@@ -27,7 +27,7 @@ async function loadPage() {
         // Set damage on page
         game_name.innerHTML = result.name;
         game_rating.innerHTML = result.rating;
-        game_summary.innerHTML = result.summa1ry;
+        game_summary.innerHTML = result.summary;
         
         game_genre.innerHTML = "";
         for(const g of result.genre) {

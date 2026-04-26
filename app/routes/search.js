@@ -27,6 +27,7 @@ search.post('/query_name', async (req, res) => {
         const raw_data = gameInfo.data;
         let game = [];
         let id = [];
+        //console.log(gameInfo);
         for(const d of raw_data) {
             id.push(d.id);
             game.push(d.name);
@@ -157,7 +158,7 @@ async function getGameByName(gameName) {
             url: "https://api.igdb.com/v4/games",
             method: 'POST',
             headers: header,
-            data: `fields name; search "${gameName}"; limit 10;`
+            data: `fields *; search "${gameName}"; limit 20;`
         });
     } catch {
         console.log("failed to get game data")
