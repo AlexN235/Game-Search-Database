@@ -1,21 +1,19 @@
 // Javascript for frontend of search webpage
 
 // globals
-const query = window.location.href.split("/game/");
+const query = window.location.href.split("/search/game/");
 const game_name = document.querySelector('.game-name-info');
 const game_rating = document.querySelector('.game-rating-info');
 const game_genre = document.querySelector('.game-genre-info');
 const game_summary = document.querySelector('.game-summary-info');
 
-
-console.log("HELLO");
-
 async function loadPage() {
     // ############ Deal with null imput :: change the regexp in url or logically here ############
     const gameID = query[1];
     console.log(gameID);
+    console.log(query);
     
-    const url = query[0] + "/game_info";
+    const url = query[0] + "/request_database/game_info";
     console.log(url);
     try {
         const response = await axios.post( url, {id: gameID});

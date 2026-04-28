@@ -1,7 +1,7 @@
 // Javascript for frontend of search webpage
 
 // globals
-const query = window.location.href.split("?");
+const query = window.location.href.split("/search");
 const game_list = document.querySelector('.result-list');
 
 const data = {
@@ -9,7 +9,7 @@ const data = {
 }
 
 async function loadPage() {
-    const url = query[0] + "/query_name";
+    const url = query[0] + "/request_database/query_name";
     try {
         const response = await axios.post(url, data);
         if(response.statusText != "OK") {
