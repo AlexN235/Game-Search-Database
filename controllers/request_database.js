@@ -8,7 +8,21 @@ const database = express.Router();
 const __dirname = path.resolve();
 
 let genre_table = new Map();
+let engines_table = new Map();
+let keywords_table = new Map();
+let platforms_table = new Map();
+let videos_table = new Map();
 
+const database_names = ["genres", "game_engines", "platform_types", "game_videos", "keywords"];
+
+const database_tables = new Map([
+    ["genres", genre_table],
+    ["game_engines", engines_table],
+    ["platform_types", platforms_table],
+    ["game_videos", videos_table],
+    ["keywords", keywords_table],
+    ]);
+   
 database.post('/query_name', async (req, res) => {
     // Search for game based on id
     let data;
@@ -38,15 +52,25 @@ database.post('/query_name', async (req, res) => {
     } 
 })
 
+// Helper function to populate tables from igdb to define ids to names.
+async function fillTables() {
+    let table
+    for(const name of database_names) {
+        try {
+            table = await getChart(name);
+            for(const entry of table.data) 
+                database_tables.get(name).set(entry['id'], entry['name']);
+        } catch {
+            console.log(`${name} table query fail`)
+        }
+    }
+}
+
 database.post('/game_info', async (req, res) => {
     const id = req.body.id;
-    console.log(id);
-    console.log("in game with ID");
-    // Make table for genre (id, name)
+    // Get table data.
     try {
-        const table = await getChart();
-        for(const gen of table.data)
-            genre_table.set(gen['id'], gen['name']);
+        await fillTables();
     } catch {
         console.log("getting table FAILED")
     }
@@ -63,6 +87,8 @@ database.post('/game_info', async (req, res) => {
         const genre = [];
         for(const i of raw_data.genres) 
             genre.push(genre_table.get(i));
+        
+        //console.log(raw_data);
 
         // Send response
         res.status(200);
@@ -130,7 +156,7 @@ async function getGameById(gameID) {
             url: "https://api.igdb.com/v4/games",
             method: 'POST',
             headers: header,
-            data: `fields name, id, rating, summary, genres; where id=${gameID}; limit 1;` // change this to use id
+            data: `fields name, id, rating, summary, genres, keywords, cover, game_engines, platforms, videos ; where id=${gameID}; limit 1;` // change this to use id
         });
     } catch {
         console.log("failed to get game data")
@@ -159,7 +185,7 @@ async function getGameByName(gameName) {
     return res;
 }
 
-async function getChart() {
+async function getGenreChart() {
     if(accessToken == '')
         return
     const header = {
@@ -187,6 +213,30 @@ async function getChart() {
         });
     } catch {
         console.log("failed to get game chart")
+    }
+    return res;
+}
+
+async function getChart(dbName) {
+    if(!database_tables.has(dbName)) 
+        return;
+    if(accessToken == '')
+        return;
+    
+    const header = {
+            'Client-ID': clientID,
+            'Authorization': `Bearer ${accessToken}`,
+        }
+    let res;
+    try {
+        res = await axios({
+            url: `https://api.igdb.com/v4/${dbName}`,
+            method: 'POST',
+            headers: header,
+            data: 'fields name;'
+        });
+    } catch {
+        console.log(`Failed to get chart: ${dbName}`);
     }
     return res;
 }
