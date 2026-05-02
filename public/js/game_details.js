@@ -36,15 +36,45 @@ async function loadPage() {
         if(result.platforms && result.platforms.length>0) game_platforms.innerHTML = result.platforms;
         if(result.engines && result.engines.length>0) game_engines.innerHTML = result.engines; 
         if(result.keywords && result.keywords.length>0) game_keywords.innerHTML = result.keywords;
-        if(result.cover) { 
-            game_cover.src = result.cover;
-
+        if(result.cover) {
+            scaleImage(result.cover, 0.5, game_cover);
+            // const img = new Image();
+            // img.setAttribute('crossOrigin', 'anonymous');   // Included to avoid CORS approval issue from google.
+            // img.src = result.cover;
+            // img.onload = () => {
+                // let canvas = document.createElement('canvas');
+                // let ctx = canvas.getContext('2d');
+                
+                // canvas.width = img.width * 0.5;
+                // canvas.height = img.height * 0.5;
+                
+                // ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                // const scaledImageSrc = canvas.toDataURL('image/jpeg');
+                // game_cover.src = scaledImageSrc;
+            // }
         }
-
     } catch (error) {
         console.error(error.message);
         console.log("error in here");
     }
 }
+
+function scaleImage(imgSrc, scaleFactor, imgContainer) {
+    const img = new Image();
+    img.setAttribute('crossOrigin', 'anonymous');   // Included to avoid CORS approval issue from google.
+    img.src = imgSrc;
+    img.onload = () => {
+        let canvas = document.createElement('canvas');
+        let ctx = canvas.getContext('2d');
+        
+        canvas.width = img.width * scaleFactor;
+        canvas.height = img.height * scaleFactor;
+        
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const scaledImageSrc = canvas.toDataURL('image/jpeg');
+        imgContainer.src = scaledImageSrc;
+    }
+}
+
 
 loadPage()
