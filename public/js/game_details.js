@@ -28,15 +28,18 @@ async function loadPage() {
         
         // Set damage on page
         game_name.innerHTML = result.name;
-        game_rating.innerHTML = result.rating;
-        game_summary.innerHTML = result.summary;
+        if(result.rating) game_rating.innerHTML = result.rating;
+        if(result.summary) game_summary.innerHTML = result.summary;
         
         // Multiple outputs
-        game_genre.innerHTML = result.genres;
-        game_platforms.innerHTML = result.platforms;
-        game_engines.innerHTML = result.engines; 
-        game_keywords.innerHTML = result.keywords;
-        game_cover.src = result.cover;
+        if(result.genres && result.genres.length>0) game_genre.innerHTML = result.genres;
+        if(result.platforms && result.platforms.length>0) game_platforms.innerHTML = result.platforms;
+        if(result.engines && result.engines.length>0) game_engines.innerHTML = result.engines; 
+        if(result.keywords && result.keywords.length>0) game_keywords.innerHTML = result.keywords;
+        if(result.cover) { 
+            game_cover.src = result.cover;
+
+        }
 
     } catch (error) {
         console.error(error.message);
