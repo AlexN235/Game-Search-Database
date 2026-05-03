@@ -2,6 +2,8 @@
 
 // globals
 const query = window.location.href.split("/search/game/");
+
+// globals - game information.
 const game_name = document.querySelector('.game-name-info');
 const game_rating = document.querySelector('.game-rating-info');
 const game_genre = document.querySelector('.game-genre-info');
@@ -11,14 +13,23 @@ const game_engines = document.querySelector('.game-engines-info');
 const game_keywords = document.querySelector('.game-keywords-info');
 const game_cover = document.querySelector('.game-cover-img');
 
+//globals - functionality
+
+
+// Event listeners.
+game_summary.addEventListener('click', (e) => {
+    //console.log(e.target);
+    expandLineClamp(e.target);
+    });
+game_keywords.addEventListener('click', (e) => {
+    //console.log(e.target);
+    expandLineClamp(e.target);
+    });
+    
 async function loadPage() {
     // ############ Deal with null imput :: change the regexp in url or logically here ############
     const gameID = query[1];
-    console.log(gameID);
-    console.log(query);
-    
     const url = query[0] + "/request_database/game_info";
-    console.log(url);
     try {
         const response = await axios.post( url, {id: gameID});
         if(response.statusText != "OK") {
@@ -38,20 +49,6 @@ async function loadPage() {
         if(result.keywords && result.keywords.length>0) game_keywords.innerHTML = result.keywords;
         if(result.cover) {
             scaleImage(result.cover, 0.5, game_cover);
-            // const img = new Image();
-            // img.setAttribute('crossOrigin', 'anonymous');   // Included to avoid CORS approval issue from google.
-            // img.src = result.cover;
-            // img.onload = () => {
-                // let canvas = document.createElement('canvas');
-                // let ctx = canvas.getContext('2d');
-                
-                // canvas.width = img.width * 0.5;
-                // canvas.height = img.height * 0.5;
-                
-                // ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                // const scaledImageSrc = canvas.toDataURL('image/jpeg');
-                // game_cover.src = scaledImageSrc;
-            // }
         }
     } catch (error) {
         console.error(error.message);
@@ -74,6 +71,10 @@ function scaleImage(imgSrc, scaleFactor, imgContainer) {
         const scaledImageSrc = canvas.toDataURL('image/jpeg');
         imgContainer.src = scaledImageSrc;
     }
+}
+
+function expandLineClamp(textBox) {
+    textBox.classList.toggle('expanded');
 }
 
 

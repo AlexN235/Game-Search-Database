@@ -76,26 +76,22 @@ h4 {
 }
 
 .game-info-container {
+    padding: 10px;
+    
 }
 
 .upper-info-container {
     display: grid;
-    grid-template-columns: auto auto auto auto;
-    grid-template-rows: auto auto auto auto auto;
-    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
     background-color: lightgrey;
-    max-height: 720px;
-    max-width:  1500px;
 }
 
 .lower-info-container {
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: auto auto auto;
-    gap: 10px;
+    grid-template-rows: repeat(auto-fit, auto);
     background-color: lightgrey;
-    max-height: 720px;
-    max-width:  1500px;
 }
 
 .game-cover {
@@ -114,6 +110,12 @@ h4 {
     max-height: 500px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 4;
     overflow: hidden;
+}
+
+.expanded {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: unset;
 }
