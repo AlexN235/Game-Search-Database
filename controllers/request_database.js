@@ -58,16 +58,25 @@ database.post('/query_name', async (req, res) => {
 database.post('/game_info', async (req, res) => {
     const id = req.body.id;
     try {
-        // PROCESS DATA TO SEND BACK IN RESPONSE
+        // API request: name, rating, summary, genre, platform, engine, keywords
         const queriedInfo = await getGameById(id);
         const gameStats = queriedInfo.data[0];
+        
         for(const category of databaseNames) {
             const info = await getFieldsFromID(category, gameStats[category]);
             gameStats[category] = info.map((n) => (n.name));
         }
-        const info = await getFieldFromID("cover", gameStats["id"]);
-        let coverURL = info[0].url.split("t_thumb");
+        
+        
+        // API request: cover
+        const coverInfo = await getFieldFromID("cover", gameStats["id"]);
+        let coverURL = coverInfo[0].url.split("t_thumb");
         gameStats["cover"] = coverURL[0] + "t_720p" + coverURL[1];
+        
+        // API request: videos
+        const videoInfo = await getFieldFromID("videos", gameStats["id"]);
+        const videoURL = `https://www.youtube.com/embed/${videoInfo[0].video_id}`;
+        gameStats["videos"] = videoURL;
         
         // Send response
         res.status(200);
@@ -82,6 +91,7 @@ database.post('/game_info', async (req, res) => {
             videos : gameStats['videos'],
             keywords : gameStats['keywords'],
         })
+        
         res.send()
     } catch {
         console.log("failed to retrieve data from database.");
@@ -192,7 +202,7 @@ async function getGameById(gameID) {
             url: "https://api.igdb.com/v4/games",
             method: 'POST',
             headers: header,
-            data: `fields name, id, rating, summary, genres, keywords, cover, game_engines, platforms, videos ; where id=${gameID}; limit 1;` // change this to use id
+            data: `fields name, id, rating, summary, genres, keywords, cover, game_engines, platforms, videos; where id=${gameID}; limit 1;` // change this to use id
         });
     } catch {
         console.log("failed to get game data")

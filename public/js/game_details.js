@@ -12,17 +12,16 @@ const game_platforms = document.querySelector('.game-platforms-info');
 const game_engines = document.querySelector('.game-engines-info');
 const game_keywords = document.querySelector('.game-keywords-info');
 const game_cover = document.querySelector('.game-cover-img');
+const game_video = document.querySelector('.video-player');
 
 //globals - functionality
 
 
 // Event listeners.
 game_summary.addEventListener('click', (e) => {
-    //console.log(e.target);
     expandLineClamp(e.target);
     });
 game_keywords.addEventListener('click', (e) => {
-    //console.log(e.target);
     expandLineClamp(e.target);
     });
     
@@ -37,7 +36,7 @@ async function loadPage() {
         }
         const result = await response.data;
         
-        // Set damage on page
+        // Set info on page
         game_name.innerHTML = result.name;
         if(result.rating) game_rating.innerHTML = result.rating;
         if(result.summary) game_summary.innerHTML = result.summary;
@@ -47,9 +46,9 @@ async function loadPage() {
         if(result.platforms && result.platforms.length>0) game_platforms.innerHTML = result.platforms;
         if(result.engines && result.engines.length>0) game_engines.innerHTML = result.engines; 
         if(result.keywords && result.keywords.length>0) game_keywords.innerHTML = result.keywords;
-        if(result.cover) {
-            scaleImage(result.cover, 0.5, game_cover);
-        }
+        if(result.cover) scaleImage(result.cover, 0.5, game_cover);
+        if(result.videos) game_video.src = result.videos;
+        
     } catch (error) {
         console.error(error.message);
         console.log("error in here");

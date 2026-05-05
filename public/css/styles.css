@@ -77,13 +77,12 @@ h4 {
 
 .game-info-container {
     padding: 10px;
-    
 }
 
 .upper-info-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+    grid-template-rows: auto ;
     background-color: lightgrey;
 }
 
@@ -95,7 +94,7 @@ h4 {
 }
 
 .game-cover {
-    grid-row-end: span 2;
+    grid-row-end: span 10;
     max-width: 100%;
     height: auto;
 }
@@ -103,11 +102,11 @@ h4 {
 .small-info-box {
     width: 300px;
     height: 100px;
+    text-align: center;
 }
 
 .large-info-box {
     width: auto;
-    max-height: 500px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
