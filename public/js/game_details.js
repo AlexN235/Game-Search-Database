@@ -47,7 +47,7 @@ async function loadPage() {
         if(result.engines && result.engines.length>0) game_engines.innerHTML = result.engines; 
         if(result.keywords && result.keywords.length>0) game_keywords.innerHTML = result.keywords;
         if(result.cover) scaleImage(result.cover, 0.5, game_cover);
-        if(result.videos) game_video.src = result.videos;
+        //if(result.videos) game_video.src = result.videos;
         
     } catch (error) {
         console.error(error.message);

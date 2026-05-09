@@ -118,3 +118,31 @@ h4 {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: unset;
 }
+
+.header-video-box {
+    background-color: grey;
+    padding: 20px;
+    max-height: auto;
+    min-width: 840px;
+    min-height: 490px;
+}
+
+.video-container {
+    object-fit: contain;
+    background-color: black;
+    display: flex;
+    margin: auto;
+    height: auto;
+    width: auto;
+    max-width: 70%;
+    max-height: 90%;
+}
+
+.video-container video {
+    object-fit: contain;
+    width: 800px;
+    height: 450px;
+    display: block;
+    margin: auto;
+    background-color: transparent;
+}
