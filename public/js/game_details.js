@@ -3,6 +3,7 @@
 // globals
 const query = window.location.href.split("/search/game/");
 
+
 // globals - game information.
 const game_name = document.querySelector('.game-name-info');
 const game_rating = document.querySelector('.game-rating-info');
@@ -15,7 +16,9 @@ const game_cover = document.querySelector('.game-cover-img');
 const game_video = document.querySelector('.video-player');
 
 //globals - functionality
-
+const search_text = document.querySelector('.nav-bar-search-input');
+const search_btn = document.querySelector('.nav-bar-search-button');
+search_btn.addEventListener('click', goToSearch);
 
 // Event listeners.
 game_summary.addEventListener('click', (e) => {
@@ -24,6 +27,15 @@ game_summary.addEventListener('click', (e) => {
 game_keywords.addEventListener('click', (e) => {
     expandLineClamp(e.target);
     });
+    
+function goToSearch() {
+    const textValue = search_text.value;
+    
+    if(textValue != "") {
+        window.location.href = window.location.hostname +  '../../../../' + 'search' + `?q=${textValue}`;
+        
+    }
+}
     
 async function loadPage() {
     // ############ Deal with null imput :: change the regexp in url or logically here ############
