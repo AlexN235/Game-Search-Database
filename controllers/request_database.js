@@ -64,19 +64,22 @@ database.post('/game_info', async (req, res) => {
         
         for(const category of databaseNames) {
             const info = await getFieldsFromID(category, gameStats[category]);
+            if(!info)
+                continue;
             gameStats[category] = info.map((n) => (n.name));
         }
-        
-        
+         
         // API request: cover
         const coverInfo = await getFieldFromID("cover", gameStats["id"]);
         let coverURL = coverInfo[0].url.split("t_thumb");
-        gameStats["cover"] = coverURL[0] + "t_720p" + coverURL[1];
+        if(coverURL) gameStats["cover"] = coverURL[0] + "t_720p" + coverURL[1];
         
         // API request: videos
         const videoInfo = await getFieldFromID("videos", gameStats["id"]);
-        const videoURL = `https://www.youtube.com/embed/${videoInfo[0].video_id}`;
-        gameStats["videos"] = videoURL;
+        if(videoInfo == null) {
+            const videoURL = `https://www.youtube.com/embed/${videoInfo[0].video_id}`;
+            if(videoURL) gameStats["videos"] = videoURL;
+        }
         
         // Send response
         res.status(200);
@@ -93,7 +96,16 @@ database.post('/game_info', async (req, res) => {
         })
         
         res.send()
-    } catch {
+    } catch (err) {
+        if (err.response) {
+            console.log(err.response);
+        }
+        else if (err.request) {
+            console.log(err.request);
+        }
+        else {
+            console.log('Error', err.message);
+        }
         console.log("failed to retrieve data from database.");
     } 
 })
@@ -102,6 +114,8 @@ async function getFieldsFromID(category, ids) {
     if(!databaseTables.has(category)) 
         return;
     if(accessToken == '')
+        return;
+    if(!ids) 
         return;
     
     let IDList = ""
