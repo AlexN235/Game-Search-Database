@@ -60,6 +60,8 @@ h4 {
 
 ul {
     list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 li {
@@ -118,27 +120,6 @@ input {
     display: inline-block; 
 }
 
-.display-game-img {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   background-color: white;
-}
-
-.search-node {
-    border: 1px solid grey;
-    border-radius: 5px;
-    padding: 0.5rem;
-    margin: 0rem;
-    background-color: white;
-}
-
-.game-info-section {
-    margin: auto;
-    background-color: white;
-    text-align: center;
-}
-
 .form-control {
     display: flex;
 }
@@ -153,6 +134,63 @@ input {
     padding: 5px;
     margin: 5px;
     background-color: var(--main-color);
+}
+
+/*
+=============== 
+Search Page
+===============
+*/
+
+.main-search-container {
+    width: 50rem;
+    border: 1px solid black;
+    margin: auto;   
+    Flexbo
+    align-items: center;
+}
+
+/*
+=============== 
+Search Page
+===============
+*/
+
+.search-node {
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 0.5rem;
+    margin: 0.2rem;
+    background-color: white;
+}
+
+.list-container {
+    max-width: 90%;
+    margin: auto;
+    line-height: 0.5rem;
+}
+
+.result-list {
+    margin: 1rem;
+}
+ 
+/*
+=============== 
+Details Page Specific
+===============
+*/
+
+.display-game-img {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background-color: white;
+}
+
+.game-info-section {
+    margin: auto;
+    background-color: white;
+    text-align: center;
 }
 
 .game-info-container {
@@ -224,14 +262,6 @@ input {
     max-height: 90%;
 }
 
-.main-search-container {
-    width: 50rem;
-    border: 1px solid black;
-    margin: auto;   
-    Flexbo
-    align-items: center;
-}
-
 .video-container video {
     object-fit: contain;
     width: 800px;
@@ -239,10 +269,4 @@ input {
     display: block;
     margin: auto;
     background-color: transparent;
-}
-
-.list-container {
-    max-width: 90%;
-    margin: auto;
-    line-height: 0.5rem;
 }
