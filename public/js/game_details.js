@@ -20,6 +20,7 @@ const search_text = document.querySelector('.nav-bar-search-input');
 const search_btn = document.querySelector('.nav-bar-search-button');
 search_btn.addEventListener('click', goToSearch);
 
+
 // Event listeners.
 game_summary.addEventListener('click', (e) => {
     expandLineClamp(e.target);
@@ -33,7 +34,6 @@ function goToSearch() {
     
     if(textValue != "") {
         window.location.href = window.location.hostname +  '../../../../' + 'search' + `?q=${textValue}`;
-        
     }
 }
     

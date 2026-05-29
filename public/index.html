@@ -12,11 +12,24 @@
     </head>
     
     <body>
+        <header>
+            <div class='nav-bar'>
+                <div class='nav-bar-left'> 
+                    <a href="../../" class='nav-bar-links nav-bar-component'>home</a>
+                    <a href="../" class='nav-bar-links nav-bar-component'>back</a>
+                    <a href="../../" class='nav-bar-links nav-bar-component'>about</a>
+                </div>
+                <div class='nav-bar-right form-control'>
+                    <input type="search" class='nav-bar-search-input'> </input>
+                    <button class='nav-bar-search-button'> Search </button>
+                </div>
+            </div>
+        </header>
         <section class="section-center">
             <h3 class="title"> Game Searcher </h3>
-            <div class="form-control">
-                <input type="text" id='search-bar' placeholder="Search Here" class="input-bar"> </input>
-                <button type='submit' class='submit-btn'> Search </button>
+            <div class="form-control main-search-container">
+                <input type="text" id='search-bar' placeholder="Enter name here..." class="search-bar main-search-input-bar"> </input>
+                <button type='submit' class='submit-btn main-search-submit-btn'> Search </button>
             </div>
         </section>
     </body>

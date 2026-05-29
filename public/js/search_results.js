@@ -4,6 +4,19 @@
 const query = window.location.href.split("/search");
 const game_list = document.querySelector('.result-list');
 
+//globals - functionality
+const search_text = document.querySelector('.nav-bar-search-input');
+const search_btn = document.querySelector('.nav-bar-search-button');
+search_btn.addEventListener('click', goToSearch);
+
+function goToSearch() {
+    const textValue = search_text.value;
+    
+    if(textValue != "") {
+        window.location.href = window.location.hostname +  '../../../../' + 'search' + `?q=${textValue}`;
+    }
+}
+
 const data = {
     search: (window.location.href.split("=")[1]),
 }
@@ -38,5 +51,7 @@ async function loadPage() {
         console.log("error in here");
     }
 }
+
+
 
 loadPage()
