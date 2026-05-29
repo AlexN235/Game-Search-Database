@@ -3,6 +3,7 @@
 // globals
 const query = window.location.href.split("/search");
 const game_list = document.querySelector('.result-list');
+const mouseOverHightlightColor = 'lightgrey';
 
 //globals - functionality
 const search_text = document.querySelector('.nav-bar-search-input');
@@ -13,8 +14,20 @@ function goToSearch() {
     const textValue = search_text.value;
     
     if(textValue != "") {
-        window.location.href = window.location.hostname +  '../../../../' + 'search' + `?q=${textValue}`;
+        window.location.href = '/search' + `?q=${textValue}`;
     }
+}
+
+function mouseHighlight() {
+    event.target.style.backgroundColor = mouseOverHightlightColor;
+}
+
+function mouseUnhighlight() {
+    event.target.style.backgroundColor = '';
+}
+
+function goToPage(gameID) {
+    window.location.href = `/search/game/${gameID}`;
 }
 
 const data = {
@@ -36,14 +49,18 @@ async function loadPage() {
         
         game_list.innerHTML = "";
         for(let i=0; i<names.length; i++) {
-            game_list.innerHTML += `\
-            <li class="search-node">\
+            const newItem = document.createElement('li');
+            newItem.classList.add("search-node");
+            newItem.innerHTML += `\
                 <a href=search/game/${ids[i]}>\
                     <h4 class="item-name"> ${names[i]} </h4>\
                 </a>\
                 <div class="item-description"> ${ids[i]} </div>\
-            </li>\
-        `;
+                `;
+            newItem.addEventListener('mouseenter', mouseHighlight);
+            newItem.addEventListener('mouseleave', mouseUnhighlight);
+            newItem.addEventListener('click', () => { goToPage(ids[i]) });
+            game_list.appendChild(newItem);
         }
         
     } catch (error) {
