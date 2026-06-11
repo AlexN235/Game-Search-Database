@@ -20,6 +20,8 @@ app.use("/search", search);
 app.use("/request_database", database);
 
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+    //console.log(`Server is running on port ${port}`);
 });
+
+export default app;
 
